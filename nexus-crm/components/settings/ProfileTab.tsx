@@ -1,19 +1,23 @@
 'use client';
 
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import { useCrm } from '@/context/CrmContext';
+import { useAuth } from '@/context/AuthContext';
 import type { CompanyProfile, PersonalInfo } from '@/types';
 import Input from '@/components/ui/Input';
 import Button from '@/components/ui/Button';
 import Modal from '@/components/ui/Modal';
 
 export default function ProfileTab() {
-  const { data, user, updateCompanyProfile, updatePersonalInfo } = useCrm();
+  const { data, user, updateCompanyProfile, updatePersonalInfo, uploadProfileAvatar } = useCrm();
+  const { user: authUser, refreshProfile } = useAuth();
   const { companyProfile, personalInfo } = data.settings;
 
   const [editingCompany, setEditingCompany] = useState(false);
   const [editingPersonal, setEditingPersonal] = useState(false);
   const [deleteConfirm, setDeleteConfirm] = useState(false);
+  const [avatarUploading, setAvatarUploading] = useState(false);
+  const avatarRef = useRef<HTMLInputElement>(null);
 
   const [company, setCompany] = useState<CompanyProfile>(companyProfile);
   const [personal, setPersonal] = useState<PersonalInfo>(personalInfo);
@@ -26,6 +30,22 @@ export default function ProfileTab() {
   const handleSavePersonal = () => {
     updatePersonalInfo(personal);
     setEditingPersonal(false);
+  };
+
+  const handleAvatarUpload = async () => {
+    const file = avatarRef.current?.files?.[0];
+    if (!file) return;
+
+    try {
+      setAvatarUploading(true);
+      await uploadProfileAvatar(file);
+      await refreshProfile();
+    } catch {
+      alert('Failed to upload avatar');
+    } finally {
+      setAvatarUploading(false);
+      if (avatarRef.current) avatarRef.current.value = '';
+    }
   };
 
   return (
@@ -118,14 +138,40 @@ export default function ProfileTab() {
         {editingPersonal ? (
           <div className="grid grid-cols-2 gap-4">
             <Input label="Full name" value={personal.name} onChange={(e) => setPersonal({ ...personal, name: e.target.value })} />
-            <Input label="Role" value={personal.role} onChange={(e) => setPersonal({ ...personal, role: e.target.value })} />
-            <Input label="Email" type="email" value={personal.email} onChange={(e) => setPersonal({ ...personal, email: e.target.value })} />
+            <Input label="Role" value={personal.role} onChange={(e) => setPersonal({ ...personal, role: e.target.value })} disabled />
+            <Input label="Email" type="email" value={personal.email} onChange={(e) => setPersonal({ ...personal, email: e.target.value })} disabled />
             <Input label="Phone" value={personal.phone} onChange={(e) => setPersonal({ ...personal, phone: e.target.value })} />
           </div>
         ) : (
           <div className="flex items-start gap-5">
-            <div className="w-12 h-12 rounded-full bg-[#6B5B73] flex items-center justify-center shrink-0">
-              <span className="text-white text-lg font-medium">{user.avatarInitial}</span>
+            <div className="relative group">
+              {authUser?.avatarUrl ? (
+                <img
+                  src={authUser.avatarUrl}
+                  alt={authUser.fullName}
+                  className="w-12 h-12 rounded-full object-cover"
+                />
+              ) : (
+                <div className="w-12 h-12 rounded-full bg-[#6B5B73] flex items-center justify-center shrink-0">
+                  <span className="text-white text-lg font-medium">{user.avatarInitial}</span>
+                </div>
+              )}
+              <button
+                onClick={() => avatarRef.current?.click()}
+                className="absolute inset-0 flex items-center justify-center bg-black/40 rounded-full opacity-0 group-hover:opacity-100 transition-opacity cursor-pointer"
+                disabled={avatarUploading}
+              >
+                <span className="material-symbols-outlined text-white text-sm">
+                  {avatarUploading ? 'hourglass_empty' : 'camera_alt'}
+                </span>
+              </button>
+              <input
+                ref={avatarRef}
+                type="file"
+                accept="image/*"
+                className="hidden"
+                onChange={handleAvatarUpload}
+              />
             </div>
             <div className="grid grid-cols-2 gap-y-4 gap-x-8 flex-1">
               <div>

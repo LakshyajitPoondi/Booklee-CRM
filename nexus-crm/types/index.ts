@@ -96,6 +96,7 @@ export interface Document {
   uploadedAt: string;
   expiryDate?: string;
   dataUrl?: string;
+  storagePath?: string;
 }
 
 export interface Counselor {

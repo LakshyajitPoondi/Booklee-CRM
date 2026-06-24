@@ -11,6 +11,14 @@ export const NAV_ITEMS = [
   { key: 'settings', label: 'Settings', icon: 'settings', href: '/settings' },
 ] as const;
 
+export const CLIENT_NAV_ITEMS = [
+  { key: 'dashboard', label: 'Dashboard', icon: 'dashboard', href: '/dashboard' },
+  { key: 'applications', label: 'Applications', icon: 'description', href: '/applications' },
+  { key: 'documents', label: 'Documents', icon: 'folder', href: '/documents' },
+  { key: 'profile', label: 'Profile', icon: 'person', href: '/profile' },
+  { key: 'support', label: 'Support', icon: 'support_agent', href: '/support' },
+] as const;
+
 export const PIPELINE_STAGES: {
   key: LeadStatus;
   label: string;
