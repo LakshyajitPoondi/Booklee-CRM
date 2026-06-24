@@ -11,7 +11,7 @@ export async function GET(request: Request) {
     return NextResponse.redirect(`${origin}/login?error=no_code`);
   }
 
-  const supabase = await createClient();
+  const supabase = (await createClient()) as any;
 
   // Step 1: Exchange code for session
   const { error: exchangeError } = await supabase.auth.exchangeCodeForSession(code);
@@ -51,7 +51,7 @@ export async function GET(request: Request) {
       // The trigger may have already created the profile
     } else if (!existingProfile) {
       console.log('[auth/callback] Creating new profile for:', user.email, 'with role:', role);
-      const { error: insertError } = await supabase.from('profiles').insert({
+      const profileData: any = {
         id: user.id,
         email: user.email ?? '',
         full_name:
@@ -61,7 +61,8 @@ export async function GET(request: Request) {
         avatar_url: user.user_metadata?.avatar_url ?? null,
         role,
         phone: null,
-      });
+      };
+      const { error: insertError } = await supabase.from('profiles').insert(profileData);
 
       if (insertError) {
         console.error('[auth/callback] Profile insert error:', insertError.message);

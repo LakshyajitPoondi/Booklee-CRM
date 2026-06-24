@@ -8,7 +8,7 @@ import type {
 const supabase = createClient();
 
 export async function getUniversities(): Promise<UniversityRow[]> {
-  const { data, error } = await (supabase.from('universities'))
+  const { data, error } = await (supabase.from('universities') as any)
     .select('*')
     .order('name', { ascending: true });
 
@@ -19,7 +19,7 @@ export async function getUniversities(): Promise<UniversityRow[]> {
 export async function getUniversityById(
   id: string
 ): Promise<UniversityRow | null> {
-  const { data, error } = await (supabase.from('universities'))
+  const { data, error } = await (supabase.from('universities') as any)
     .select('*')
     .eq('id', id)
     .single();
@@ -31,7 +31,7 @@ export async function getUniversityById(
 export async function createUniversity(
   uni: UniversityInsert
 ): Promise<UniversityRow> {
-  const { data, error } = await (supabase.from('universities'))
+  const { data, error } = await (supabase.from('universities') as any)
     .insert(uni)
     .select()
     .single();
@@ -44,7 +44,7 @@ export async function updateUniversity(
   id: string,
   updates: UniversityUpdate
 ): Promise<UniversityRow> {
-  const { data, error } = await (supabase.from('universities'))
+  const { data, error } = await (supabase.from('universities') as any)
     .update(updates)
     .eq('id', id)
     .select()
@@ -55,7 +55,7 @@ export async function updateUniversity(
 }
 
 export async function deleteUniversity(id: string): Promise<void> {
-  const { error } = await (supabase.from('universities'))
+  const { error } = await (supabase.from('universities') as any)
     .delete()
     .eq('id', id);
 

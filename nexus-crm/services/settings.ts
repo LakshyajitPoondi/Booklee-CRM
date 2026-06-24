@@ -14,7 +14,7 @@ const supabase = createClient();
  * Profile
  * ============================================================ */
 export async function getProfile(userId: string): Promise<ProfileRow | null> {
-  const { data, error } = await (supabase.from('profiles'))
+  const { data, error } = await (supabase.from('profiles') as any)
     .select('*')
     .eq('id', userId)
     .single();
@@ -27,7 +27,7 @@ export async function updateProfile(
   userId: string,
   updates: ProfileUpdate,
 ): Promise<ProfileRow> {
-  const { data, error } = await (supabase.from('profiles'))
+  const { data, error } = await (supabase.from('profiles') as any)
     .update(updates)
     .eq('id', userId)
     .select()
@@ -38,7 +38,7 @@ export async function updateProfile(
 }
 
 export async function getAllProfiles(): Promise<ProfileRow[]> {
-  const { data, error } = await (supabase.from('profiles'))
+  const { data, error } = await (supabase.from('profiles') as any)
     .select('*')
     .order('created_at', { ascending: true });
 
@@ -50,7 +50,7 @@ export async function getAllProfiles(): Promise<ProfileRow[]> {
  * Company Settings
  * ============================================================ */
 export async function getCompanySettings(): Promise<CompanySettingsRow | null> {
-  const { data, error } = await (supabase.from('company_settings'))
+  const { data, error } = await (supabase.from('company_settings') as any)
     .select('*')
     .limit(1)
     .single();
@@ -66,7 +66,7 @@ export async function updateCompanySettings(
   const existing = await getCompanySettings();
   if (!existing) throw new Error('Company settings not found');
 
-  const { data, error } = await (supabase.from('company_settings'))
+  const { data, error } = await (supabase.from('company_settings') as any)
     .update(updates)
     .eq('id', existing.id)
     .select()
@@ -82,7 +82,7 @@ export async function updateCompanySettings(
 export async function getNotificationPreferences(
   userId: string,
 ): Promise<NotificationPreferencesRow | null> {
-  const { data, error } = await (supabase.from('notification_preferences'))
+  const { data, error } = await (supabase.from('notification_preferences') as any)
     .select('*')
     .eq('user_id', userId)
     .single();
@@ -96,13 +96,13 @@ export async function updateNotificationPreferences(
   updates: NotificationPreferencesUpdate,
 ): Promise<NotificationPreferencesRow> {
   // Try update first
-  const { data: existing } = await (supabase.from('notification_preferences'))
+  const { data: existing } = await (supabase.from('notification_preferences') as any)
     .select('id')
     .eq('user_id', userId)
     .single();
 
   if (existing) {
-    const { data, error } = await supabase.from('notification_preferences')
+    const { data, error } = await (supabase.from('notification_preferences') as any)
       .update(updates)
       .eq('user_id', userId)
       .select()
@@ -113,7 +113,7 @@ export async function updateNotificationPreferences(
   }
 
   // Insert if not exists
-  const { data, error } = await supabase.from('notification_preferences')
+  const { data, error } = await (supabase.from('notification_preferences') as any)
     .insert({ user_id: userId, ...updates })
     .select()
     .single();
@@ -126,7 +126,7 @@ export async function updateNotificationPreferences(
  * Team Members (profiles with roles)
  * ============================================================ */
 export async function getTeamMembers(): Promise<ProfileRow[]> {
-  const { data, error } = await (supabase.from('profiles'))
+  const { data, error } = await (supabase.from('profiles') as any)
     .select('*')
     .in('role', ['super_admin', 'admin', 'staff'])
     .order('created_at', { ascending: true });
@@ -139,7 +139,7 @@ export async function updateMemberRole(
   userId: string,
   role: ProfileRow['role'],
 ): Promise<ProfileRow> {
-  const { data, error } = await (supabase.from('profiles'))
+  const { data, error } = await (supabase.from('profiles') as any)
     .update({ role })
     .eq('id', userId)
     .select()
@@ -151,7 +151,7 @@ export async function updateMemberRole(
 
 export async function removeMember(userId: string): Promise<void> {
   // Downgrade to client role instead of deleting
-  const { error } = await (supabase.from('profiles'))
+  const { error } = await (supabase.from('profiles') as any)
     .update({ role: 'client' })
     .eq('id', userId);
 
