@@ -71,7 +71,7 @@ export default function UniversitiesPage() {
         <KpiCard label="Average acceptance" value={`${stats.avgAcceptance.toFixed(0)}%`} trend="+3%" />
       </div>
 
-      <div className="flex flex-col sm:flex-row items-start sm:items-center gap-3">
+      <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4">
         <div className="relative flex-1 max-w-sm">
           <span className="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-[#9CA3AF] text-lg">search</span>
           <input
@@ -82,22 +82,24 @@ export default function UniversitiesPage() {
             className="w-full pl-10 pr-3 py-2 text-sm border border-[#E5E7EB] rounded-lg bg-white focus:outline-none focus:ring-2 focus:ring-[#2563eb]/20"
           />
         </div>
-        <select
-          value={countryFilter}
-          onChange={(e) => setCountryFilter(e.target.value)}
-          className="px-3 py-2 text-sm border border-[#E5E7EB] rounded-lg bg-white cursor-pointer"
-        >
-          <option value="">All countries</option>
-          {COUNTRIES.map((c) => <option key={c} value={c}>{c}</option>)}
-        </select>
-        <select
-          value={intakeFilter}
-          onChange={(e) => setIntakeFilter(e.target.value)}
-          className="px-3 py-2 text-sm border border-[#E5E7EB] rounded-lg bg-white cursor-pointer"
-        >
-          <option value="">All intakes</option>
-          {INTAKES.map((i) => <option key={i} value={i}>{i}</option>)}
-        </select>
+        <div className="flex items-center gap-2">
+          <select
+            value={countryFilter}
+            onChange={(e) => setCountryFilter(e.target.value)}
+            className="px-3 py-2 text-sm border border-[#E5E7EB] rounded-lg bg-white cursor-pointer"
+          >
+            <option value="">All countries</option>
+            {COUNTRIES.map((c) => <option key={c} value={c}>{c}</option>)}
+          </select>
+          <select
+            value={intakeFilter}
+            onChange={(e) => setIntakeFilter(e.target.value)}
+            className="px-3 py-2 text-sm border border-[#E5E7EB] rounded-lg bg-white cursor-pointer"
+          >
+            <option value="">All intakes</option>
+            {INTAKES.map((i) => <option key={i} value={i}>{i}</option>)}
+          </select>
+        </div>
       </div>
 
       <div className="bg-white rounded-xl border border-[#E5E7EB] card-shadow overflow-hidden">

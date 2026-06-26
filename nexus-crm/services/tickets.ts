@@ -10,7 +10,7 @@ import type {
 const supabase = createClient();
 
 export async function getTickets(): Promise<SupportTicketRow[]> {
-  const { data, error } = await (supabase.from('support_tickets') as any)
+  const { data, error } = await supabase.from('support_tickets')
     .select('*')
     .order('created_at', { ascending: false });
 
@@ -21,7 +21,7 @@ export async function getTickets(): Promise<SupportTicketRow[]> {
 export async function getTicketById(
   id: string,
 ): Promise<SupportTicketRow | null> {
-  const { data, error } = await (supabase.from('support_tickets') as any)
+  const { data, error } = await supabase.from('support_tickets')
     .select('*')
     .eq('id', id)
     .single();
@@ -33,7 +33,7 @@ export async function getTicketById(
 export async function createTicket(
   ticket: SupportTicketInsert,
 ): Promise<SupportTicketRow> {
-  const { data, error } = await (supabase.from('support_tickets') as any)
+  const { data, error } = await supabase.from('support_tickets')
     .insert(ticket)
     .select()
     .single();
@@ -46,7 +46,7 @@ export async function updateTicket(
   id: string,
   updates: SupportTicketUpdate,
 ): Promise<SupportTicketRow> {
-  const { data, error } = await (supabase.from('support_tickets') as any)
+  const { data, error } = await supabase.from('support_tickets')
     .update(updates)
     .eq('id', id)
     .select()
@@ -59,7 +59,7 @@ export async function updateTicket(
 export async function getTicketResponses(
   ticketId: string,
 ): Promise<TicketResponseRow[]> {
-  const { data, error } = await (supabase.from('ticket_responses') as any)
+  const { data, error } = await supabase.from('ticket_responses')
     .select('*')
     .eq('ticket_id', ticketId)
     .order('created_at', { ascending: true });
@@ -71,7 +71,7 @@ export async function getTicketResponses(
 export async function addTicketResponse(
   response: TicketResponseInsert,
 ): Promise<TicketResponseRow> {
-  const { data, error } = await (supabase.from('ticket_responses') as any)
+  const { data, error } = await supabase.from('ticket_responses')
     .insert(response)
     .select()
     .single();

@@ -8,7 +8,7 @@ import type {
 const supabase = createClient();
 
 export async function getApplications(): Promise<ApplicationRow[]> {
-  const { data, error } = await (supabase.from('applications') as any)
+  const { data, error } = await supabase.from('applications')
     .select('*')
     .order('created_at', { ascending: false });
 
@@ -19,7 +19,7 @@ export async function getApplications(): Promise<ApplicationRow[]> {
 export async function getApplicationById(
   id: string
 ): Promise<ApplicationRow | null> {
-  const { data, error } = await (supabase.from('applications') as any)
+  const { data, error } = await supabase.from('applications')
     .select('*')
     .eq('id', id)
     .single();
@@ -31,7 +31,7 @@ export async function getApplicationById(
 export async function createApplication(
   app: ApplicationInsert
 ): Promise<ApplicationRow> {
-  const { data, error } = await (supabase.from('applications') as any)
+  const { data, error } = await supabase.from('applications')
     .insert(app)
     .select()
     .single();
@@ -44,7 +44,7 @@ export async function updateApplication(
   id: string,
   updates: ApplicationUpdate
 ): Promise<ApplicationRow> {
-  const { data, error } = await (supabase.from('applications') as any)
+  const { data, error } = await supabase.from('applications')
     .update(updates)
     .eq('id', id)
     .select()
@@ -55,7 +55,7 @@ export async function updateApplication(
 }
 
 export async function deleteApplication(id: string): Promise<void> {
-  const { error } = await (supabase.from('applications') as any)
+  const { error } = await supabase.from('applications')
     .delete()
     .eq('id', id);
 

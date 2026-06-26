@@ -4,7 +4,7 @@ import type { LeadInsert, LeadUpdate, LeadRow } from '@/types/database';
 const supabase = createClient();
 
 export async function getLeads(): Promise<LeadRow[]> {
-  const { data, error } = await (supabase.from('leads') as any)
+  const { data, error } = await supabase.from('leads')
     .select('*')
     .order('created_at', { ascending: false });
 
@@ -13,7 +13,7 @@ export async function getLeads(): Promise<LeadRow[]> {
 }
 
 export async function getLeadById(id: string): Promise<LeadRow | null> {
-  const { data, error } = await (supabase.from('leads') as any)
+  const { data, error } = await supabase.from('leads')
     .select('*')
     .eq('id', id)
     .single();
@@ -23,7 +23,7 @@ export async function getLeadById(id: string): Promise<LeadRow | null> {
 }
 
 export async function createLead(lead: LeadInsert): Promise<LeadRow> {
-  const { data, error } = await (supabase.from('leads') as any)
+  const { data, error } = await supabase.from('leads')
     .insert(lead)
     .select()
     .single();
@@ -36,7 +36,7 @@ export async function updateLead(
   id: string,
   updates: LeadUpdate
 ): Promise<LeadRow> {
-  const { data, error } = await (supabase.from('leads') as any)
+  const { data, error } = await supabase.from('leads')
     .update(updates)
     .eq('id', id)
     .select()
@@ -47,6 +47,6 @@ export async function updateLead(
 }
 
 export async function deleteLead(id: string): Promise<void> {
-  const { error } = await (supabase.from('leads') as any).delete().eq('id', id);
+  const { error } = await supabase.from('leads').delete().eq('id', id);
   if (error) throw error;
 }

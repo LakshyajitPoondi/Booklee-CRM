@@ -9,7 +9,7 @@ import { uploadFile, getSignedUrl, deleteFile } from './storage';
 const supabase = createClient();
 
 export async function getDocuments(): Promise<DocumentRow[]> {
-  const { data, error } = await (supabase.from('documents') as any)
+  const { data, error } = await supabase.from('documents')
     .select('*')
     .order('uploaded_at', { ascending: false });
 
@@ -20,7 +20,7 @@ export async function getDocuments(): Promise<DocumentRow[]> {
 export async function getDocumentById(
   id: string
 ): Promise<DocumentRow | null> {
-  const { data, error } = await (supabase.from('documents') as any)
+  const { data, error } = await supabase.from('documents')
     .select('*')
     .eq('id', id)
     .single();
@@ -45,7 +45,7 @@ export async function uploadDocument(
   await uploadFile('documents', storagePath, file);
 
   // Save metadata to database
-  const { data, error } = await (supabase.from('documents') as any)
+  const { data, error } = await supabase.from('documents')
     .insert({
       ...metadata,
       storage_path: storagePath,
@@ -68,7 +68,7 @@ export async function updateDocument(
   id: string,
   updates: DocumentUpdate,
 ): Promise<DocumentRow> {
-  const { data, error } = await (supabase.from('documents') as any)
+  const { data, error } = await supabase.from('documents')
     .update(updates)
     .eq('id', id)
     .select()
@@ -82,7 +82,7 @@ export async function deleteDocument(id: string): Promise<void> {
   // Get storage path before deleting
   const doc = await getDocumentById(id);
 
-  const { error } = await (supabase.from('documents') as any).delete().eq('id', id);
+  const { error } = await supabase.from('documents').delete().eq('id', id);
   if (error) throw error;
 
   // Delete file from storage

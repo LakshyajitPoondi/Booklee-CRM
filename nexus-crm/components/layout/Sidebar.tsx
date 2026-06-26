@@ -71,7 +71,7 @@ export default function Sidebar() {
         )}
       >
         {/* Logo */}
-        <div className={cn('flex items-center gap-2.5 px-4 py-5 border-b border-[#F3F4F6]', collapsed && 'justify-center px-2')}>
+        <div className={cn('flex items-center border-b border-[#F3F4F6]', collapsed ? 'flex-col gap-1 px-2 py-3' : 'gap-2.5 px-4 py-5')}>
           <div className="w-8 h-8 rounded-lg bg-[#2563eb] flex items-center justify-center shrink-0">
             <span className="text-white font-bold text-sm">U</span>
           </div>
@@ -82,7 +82,7 @@ export default function Sidebar() {
             onClick={() => setCollapsed(!collapsed)}
             className={cn(
               'p-1 rounded hover:bg-[#F5F6F8] cursor-pointer hidden lg:flex',
-              collapsed ? 'mx-auto' : 'ml-auto'
+              collapsed ? '' : 'ml-auto'
             )}
             aria-label={collapsed ? 'Expand sidebar' : 'Collapse sidebar'}
           >
