@@ -48,7 +48,7 @@ export default function LeadForm({ initial, onSubmit, onCancel }: LeadFormProps)
       source: source.trim(),
       country,
       value: parseFloat(value) || 0,
-      counselorId: initial?.counselorId ?? '1',
+      counselorId: initial?.counselorId ?? '',
       group,
       notes: notes.trim(),
       followUpDate: followUpDate ? new Date(followUpDate).toISOString() : undefined,

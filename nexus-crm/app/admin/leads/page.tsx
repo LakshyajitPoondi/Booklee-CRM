@@ -100,22 +100,22 @@ export default function LeadsPage() {
       </div>
 
       {/* Toolbar */}
-      <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4">
-        <div className="relative flex-1 max-w-sm">
-          <span className="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-[#9CA3AF] text-lg">search</span>
+      <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4 w-full">
+        <div className="flex items-center w-full h-[38px] bg-white border border-[#E5E7EB] rounded-lg px-3">
+          <span className="material-symbols-outlined text-[#9CA3AF] text-lg mr-2">search</span>
           <input
             type="text"
             placeholder="Search leads..."
             value={search}
             onChange={(e) => setSearch(e.target.value)}
-            className="w-full pl-10 pr-3 py-2 text-sm border border-[#E5E7EB] rounded-lg bg-white focus:outline-none focus:ring-2 focus:ring-[#2563eb]/20"
+            className="flex-1 bg-transparent text-sm focus:outline-none"
           />
         </div>
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-2 sm:ml-auto">
           <select
             value={sortBy}
             onChange={(e) => setSortBy(e.target.value as typeof sortBy)}
-            className="px-3 py-2 text-sm border border-[#E5E7EB] rounded-lg bg-white cursor-pointer"
+            className="h-[38px] px-3 text-sm border border-[#E5E7EB] rounded-lg bg-white cursor-pointer"
           >
             <option value="date">Sort by date</option>
             <option value="name">Sort by name</option>
@@ -123,14 +123,14 @@ export default function LeadsPage() {
           </select>
           <button
             onClick={() => setSortDir(sortDir === 'asc' ? 'desc' : 'asc')}
-            className="px-3 py-2 text-sm border border-[#E5E7EB] rounded-lg bg-white hover:bg-[#F9FAFB] cursor-pointer"
+            className="flex items-center h-[38px] px-3 text-sm border border-[#E5E7EB] rounded-lg bg-white hover:bg-[#F9FAFB] cursor-pointer"
           >
             {sortDir === 'asc' ? '↑ Asc' : '↓ Desc'}
           </button>
           <select
             value={statusFilter}
             onChange={(e) => setStatusFilter(e.target.value)}
-            className="px-3 py-2 text-sm border border-[#E5E7EB] rounded-lg bg-white cursor-pointer"
+            className="h-[38px] px-3 text-sm border border-[#E5E7EB] rounded-lg bg-white cursor-pointer"
           >
             <option value="">All statuses</option>
             {Object.entries(LEAD_STATUS_LABELS).map(([k, v]) => (

@@ -305,7 +305,16 @@ export function CrmProvider({ children }: { children: ReactNode }) {
               ),
             }));
           })
-          .catch(() => {});
+          .catch((err: unknown) => {
+            const errorMsg = err instanceof Error ? err.message :
+              (typeof err === 'object' && err !== null && 'message' in err ? (err as { message: string }).message : JSON.stringify(err));
+            console.error('[addLead] Failed to persist lead:', errorMsg);
+            // Remove the optimistic lead since it was not saved
+            setData((prev) => ({
+              ...prev,
+              leads: prev.leads.filter((l) => l.id !== tempId),
+            }));
+          });
       }
       return newLead;
     },

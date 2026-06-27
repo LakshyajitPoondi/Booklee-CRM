@@ -194,3 +194,11 @@ body {
 .animate-slideUp {
   animation: slideUp 0.2s ease-out;
 }
+
+/* ===== DROPDOWN MENU ROUNDED CORNERS ===== */
+/* Style native select dropdown panels to match rounded button styling */
+select::picker(select) {
+  border-radius: 0.5rem;
+  border: 1px solid #E5E7EB;
+  padding: 0.25rem 0;
+}
